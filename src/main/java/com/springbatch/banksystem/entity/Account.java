@@ -42,14 +42,4 @@ public class Account{
     @JsonIgnore
     private Customer customer;
     
-//    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-//    private Set<Transaction> transactions;
-    
-//    @OneToMany(
-//			cascade= CascadeType.ALL,
-//			orphanRemoval = true
-//			)
-//	@JoinColumn(name="trx_id")
-//	List<Transaction> transactions;
-
 }

@@ -27,7 +27,7 @@ public class JobRunner implements CommandLineRunner {
 											.addLong("time", System.currentTimeMillis())
 											.toJobParameters();
 
-		// jobLauncher.run(jobA, jobParameters);
+		jobLauncher.run(jobA, jobParameters);
 		log.info("job execution completed!");
 	}
 }

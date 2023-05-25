@@ -44,24 +44,4 @@ public class Transaction{
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
-	
-//	@ManyToOne(
-//			cascade= CascadeType.ALL
-//			)
-//	@JoinColumn(name="account_number")
-//	private Account account;
-//	
-//	@ManyToOne(
-//			cascade= CascadeType.ALL
-//			)
-//	@JoinColumn(name="customer_id")
-//	private Customer customer;
-	
-//	public Long getAccountNumber() {
-//		return account.getAccountNumber();
-//	}
-//	
-//	public Long getCustomerId() {
-//		return customer.getCustomerId();
-//	}
 }

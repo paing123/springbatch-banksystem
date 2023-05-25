@@ -18,8 +18,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.springbatch.banksystem.service.JwtUserDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
@@ -42,9 +44,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			} catch (IllegalArgumentException e) {
-				System.out.println("Unable to get JWT Token");
+				log.info("Unable to get JWT Token");
 			} catch (ExpiredJwtException e) {
-				System.out.println("JWT Token has expired");
+				log.info("JWT Token has expired");
 			}
 		} else {
 			logger.warn("JWT Token does not begin with Bearer String");
