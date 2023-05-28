@@ -2,7 +2,6 @@ package com.springbatch.banksystem.model;
 
 import java.util.List;
 
-import com.springbatch.banksystem.dto.TransactionDto;
 import com.springbatch.banksystem.entity.Transaction;
 
 import lombok.Data;

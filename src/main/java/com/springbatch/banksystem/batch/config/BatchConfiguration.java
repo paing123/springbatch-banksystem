@@ -7,18 +7,12 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
+import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,20 +20,14 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.springbatch.banksystem.dao.TransactionRepository;
 import com.springbatch.banksystem.dto.TransactionDto;
-import com.springbatch.banksystem.entity.Account;
-import com.springbatch.banksystem.entity.Customer;
 import com.springbatch.banksystem.entity.Transaction;
 import com.springbatch.banksystem.job.TransactionFilterProfessor;
 import com.springbatch.banksystem.job.TransactionListener;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.sql.DataSource;
+import java.net.MalformedURLException;
+import java.text.ParseException;
 
 @Configuration
 @EnableBatchProcessing
@@ -49,15 +37,12 @@ public class BatchConfiguration {
 	@Autowired
 	private TransactionRepository transactionRepo;
 
-	// Autowire StepBuilderFactory
 	@Autowired
-	private StepBuilderFactory sbf;
+	private StepBuilderFactory stepBuilderFactory;
 
-	// Autowire JobBuilderFactory
 	@Autowired
-	private JobBuilderFactory jbf;
+	private JobBuilderFactory jobBuilderFactor;
 
-	// Reader class Object
 	@Bean
 	public FlatFileItemReader<TransactionDto> reader() {
 
@@ -90,7 +75,6 @@ public class BatchConfiguration {
 		return reader;
 	}
 
-	// Writer class Object
 	@Bean
 	public ItemWriter<Transaction> writer() {
 		return transactions -> {
@@ -99,33 +83,33 @@ public class BatchConfiguration {
 		};
 	}
 
-	// Processor class Object
 	@Bean
 	public TransactionFilterProfessor processor() {
 		TransactionFilterProfessor processor = new TransactionFilterProfessor();
 		return processor;
 	}
 
-	// Listener class Object
 	@Bean
 	public JobExecutionListener listener() {
 		return new TransactionListener();
 	}
 
-	// Step Object
 	@Bean
-	public Step stepA() {
-		return sbf.get("stepA")
+	public Step stepA() throws UnexpectedInputException, MalformedURLException, ParseException {
+		return stepBuilderFactory.get("stepA")
 				.<TransactionDto, Transaction>chunk(1)
 				.reader(reader())
 				.processor(processor())
-				.writer(writer()).build();
+				.writer(writer())
+				.faultTolerant()
+				.skip(Exception.class)
+				.skipLimit(500)
+				.build();
 	}
 
-	// Job Object
 	@Bean
-	public Job jobA() {
-		return jbf.get("jobA")
+	public Job jobA() throws UnexpectedInputException, MalformedURLException, ParseException{
+		return jobBuilderFactor.get("jobA")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
 				.start(stepA())

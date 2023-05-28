@@ -6,11 +6,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -27,10 +26,9 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
-	
-	
-	@ExceptionHandler(UsernameNotFoundException.class)
-	public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
+		
+	@ExceptionHandler(DisabledException.class)
+	public ResponseEntity<Object> handleDisabledException(DisabledException ex, WebRequest request) {
 
 		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST.value(), 
 												new Date().toString(),
@@ -40,6 +38,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
+
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST.value(),
+												new Date().toString(),
+												ex.getMessage(),
+												request.getDescription(false));
+
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
 	
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<Object> handleNodataFoundException(NullPointerException ex, WebRequest request) {
