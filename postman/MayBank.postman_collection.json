@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "20bda397-a2a6-4c13-94e4-758c542283ed",
+		"name": "MayBank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "FindAllTransactions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXliYW5rIiwiZXhwIjoxNjg1MjgxODMxLCJpYXQiOjE2ODUyNjM4MzF9.w7VDUF-LRWjg4KpVzxIKfoA5uLKWn4Md-uqa8YZ2vu_wxv_BPyLaOoEvSedWSm3XzVfwUH-dZfv5fBxHOLhgSg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactionapi/alltransactions?pageNo=2&pageSize=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactionapi",
+						"alltransactions"
+					],
+					"query": [
+						{
+							"key": "pageNo",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FindByCustomerIdOrAccountNumOrDescription",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXliYW5rIiwiZXhwIjoxNjg1MjgxODMxLCJpYXQiOjE2ODUyNjM4MzF9.w7VDUF-LRWjg4KpVzxIKfoA5uLKWn4Md-uqa8YZ2vu_wxv_BPyLaOoEvSedWSm3XzVfwUH-dZfv5fBxHOLhgSg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"description\": \"FUND TRANSFER\",\r\n        \"account\" : {\r\n            \"accountNumber\" : 8872838283\r\n        },\r\n        \"customer\": {\r\n            \"customerId\" : 222\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactionapi/transactions?pageNo=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactionapi",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "pageNo",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateTransaction",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXliYW5rIiwiZXhwIjoxNjg1MjgxODMxLCJpYXQiOjE2ODUyNjM4MzF9.w7VDUF-LRWjg4KpVzxIKfoA5uLKWn4Md-uqa8YZ2vu_wxv_BPyLaOoEvSedWSm3XzVfwUH-dZfv5fBxHOLhgSg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"description\": \"FUND TRANSFER22525\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactionapi/updatetransaction/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactionapi",
+						"updatetransaction",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GenerateToken",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXliYW5rIiwiZXhwIjoxNjg1MDUzMzcwLCJpYXQiOjE2ODUwMzUzNzB9.kBfswi60YwOy0PwrfZ4O1O_k9zPn2CixpLsYcUeWKbCxpfgCFk-4ViWrtmB_7DRVRwHjb2yDQl-hGDBOVsJviQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"maybank\",\r\n    \"password\" : \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
